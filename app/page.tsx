@@ -1,108 +1,65 @@
-"use client";
+import Link from "next/link";
+import { Button, Card } from "./_components/ui";
 
-import { useState } from "react";
+const FEATURES = [
+  {
+    title: "Live market data",
+    body: "Streaming-refreshed quotes, price charts, and full options chains powered by Polygon.io.",
+  },
+  {
+    title: "Entry point analysis",
+    body: "A rule-based read on trend, momentum, and implied-vs-realized volatility for every ticker — with the reasoning shown, not a black box.",
+  },
+  {
+    title: "AI trading coach",
+    body: "Ask questions, get strategy feedback, and build real understanding of options mechanics — never a buy/sell signal.",
+  },
+  {
+    title: "Strategy builder",
+    body: "Model spreads, condors, and straddles with instant max profit/loss and breakeven math.",
+  },
+  {
+    title: "$100,000 paper account",
+    body: "Practice everything with simulated money against real market prices. No real trades, ever.",
+  },
+];
 
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [inputText, setInputText] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<any>(null);
-
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setResult(null);
-
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, inputText }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error || "Failed to generate.");
-
-      setResult(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function copy(text: string) {
-    await navigator.clipboard.writeText(text);
-    alert("Copied!");
-  }
-
+export default function LandingPage() {
   return (
-    <main style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
-      <h1 style={{ fontSize: 32, fontWeight: 900 }}>
-        Free Slack Workflow Blueprint Generator
-      </h1>
+    <main className="min-h-screen bg-zinc-950">
+      <div className="mx-auto max-w-4xl px-4 py-20 text-center">
+        <h1 className="text-4xl font-bold tracking-tight text-zinc-100 sm:text-5xl">
+          Learn options trading with real data and zero real risk.
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-zinc-400">
+          Real-time-ish quotes and options chains, an explainable entry-signal engine, an AI coach, and a strategy
+          builder — all running against a simulated $100,000 account.
+        </p>
+        <div className="mt-8 flex justify-center gap-3">
+          <Link href="/signup">
+            <Button className="px-6 py-3 text-base">Start paper trading</Button>
+          </Link>
+          <Link href="/login">
+            <Button variant="secondary" className="px-6 py-3 text-base">
+              Sign in
+            </Button>
+          </Link>
+        </div>
+      </div>
 
-      <form onSubmit={onSubmit} style={{ marginTop: 20, display: "grid", gap: 12 }}>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email (required)"
-          style={{ padding: 12, border: "1px solid #ddd", borderRadius: 10 }}
-        />
+      <div className="mx-auto grid max-w-5xl gap-4 px-4 pb-24 sm:grid-cols-2">
+        {FEATURES.map((f) => (
+          <Card key={f.title}>
+            <h2 className="font-semibold text-zinc-100">{f.title}</h2>
+            <p className="mt-1 text-sm text-zinc-400">{f.body}</p>
+          </Card>
+        ))}
+      </div>
 
-        <textarea
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          placeholder="Describe your workflow (roles, approvals, channel, SLA, etc.)"
-          rows={8}
-          style={{ padding: 12, border: "1px solid #ddd", borderRadius: 10 }}
-        />
-
-        <button
-          disabled={loading}
-          style={{
-            padding: 12,
-            borderRadius: 10,
-            border: "1px solid #111",
-            background: loading ? "#eee" : "#111",
-            color: loading ? "#111" : "#fff",
-            fontWeight: 800,
-          }}
-        >
-          {loading ? "Generating..." : "Generate Blueprint"}
-        </button>
-      </form>
-
-      {error && <p style={{ marginTop: 12, color: "red" }}>{error}</p>}
-
-      {result && (
-        <section style={{ marginTop: 24 }}>
-          <h2 style={{ fontSize: 22, fontWeight: 800 }}>{result.title}</h2>
-
-          <div style={{ marginTop: 10 }}>
-            <button onClick={() => copy(result.shareUrl)} style={{ marginRight: 10 }}>
-              Copy Share Link
-            </button>
-            <a href={result.shareUrl} target="_blank">
-              Open Share Page
-            </a>
-          </div>
-
-          <pre
-            style={{
-              marginTop: 16,
-              padding: 16,
-              border: "1px solid #ddd",
-              borderRadius: 12,
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            {result.outputText}
-          </pre>
-        </section>
-      )}
+      <p className="mx-auto max-w-2xl px-4 pb-12 text-center text-xs text-zinc-600">
+        Educational tool only. All trading is simulated with fake money. Nothing in this app is financial advice or a
+        recommendation to buy or sell any security.
+      </p>
     </main>
   );
 }
