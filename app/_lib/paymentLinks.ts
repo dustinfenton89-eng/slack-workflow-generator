@@ -48,5 +48,11 @@ export function buildPaymentLink(
         href: "",
         manualInstructions: `Open your bank's app, send a Zelle payment for ${amountDollars} to ${handle} with the note "${note}". Zelle doesn't support prefilled payment links, so this has to be entered manually.`,
       };
+    case "stripe":
+      return {
+        label: "Pay with Stripe",
+        href: "",
+        manualInstructions: `Send ${amountDollars} to ${handle} via Stripe with the note "${note}". Stripe doesn't support prefilled payment links, so this has to be sent manually.`,
+      };
   }
 }

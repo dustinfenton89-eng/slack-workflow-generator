@@ -1,6 +1,6 @@
 export type Condition = "New" | "Like New" | "Good" | "Fair";
 
-export type PaymentMethod = "venmo" | "paypal" | "cashapp" | "zelle";
+export type PaymentMethod = "venmo" | "paypal" | "cashapp" | "zelle" | "stripe";
 
 export type TradeInStatus =
   | "awaiting_shipment"
@@ -38,6 +38,7 @@ export type TradeIn = {
   received_at: string | null;
   paid_at: string | null;
   admin_notes: string | null;
+  payout_reference: string | null;
 };
 
 export function formatCents(cents: number): string {

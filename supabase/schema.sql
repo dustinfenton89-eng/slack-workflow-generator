@@ -22,7 +22,7 @@ create table if not exists trade_ins (
 
   seller_name text not null,
   seller_email text not null,
-  payment_method text not null check (payment_method in ('venmo', 'paypal', 'cashapp', 'zelle')),
+  payment_method text not null,
   payment_handle text not null,
 
   ship_from_name text not null,
@@ -46,6 +46,16 @@ create table if not exists trade_ins (
   paid_at timestamptz,
   admin_notes text
 );
+
+-- Kept as a separate, re-runnable statement (rather than an inline check)
+-- so adding a new payment method later doesn't require a full migration.
+alter table trade_ins drop constraint if exists trade_ins_payment_method_check;
+alter table trade_ins add constraint trade_ins_payment_method_check
+  check (payment_method in ('venmo', 'paypal', 'cashapp', 'zelle', 'stripe'));
+
+-- Set when a payout was sent automatically (currently: PayPal via the Payouts
+-- API) so there's an audit trail of the provider's batch/transaction id.
+alter table trade_ins add column if not exists payout_reference text;
 
 create index if not exists trade_ins_status_idx on trade_ins (status);
 

@@ -48,6 +48,21 @@ export default function AdminDashboard({ tradeIns }: { tradeIns: TradeIn[] }) {
     }
   }
 
+  async function sendPaypalPayout(id: string) {
+    setLoadingId(id);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/trade-ins/${id}/paypal-payout`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "PayPal payout failed.");
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Server error");
+    } finally {
+      setLoadingId(null);
+    }
+  }
+
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
     router.refresh();
@@ -78,6 +93,7 @@ export default function AdminDashboard({ tradeIns }: { tradeIns: TradeIn[] }) {
             tradeIn={t}
             loading={loadingId === t.id}
             onUpdate={(status) => updateStatus(t.id, status)}
+            onSendPaypalPayout={() => sendPaypalPayout(t.id)}
           />
         ))}
       </div>
@@ -89,7 +105,13 @@ export default function AdminDashboard({ tradeIns }: { tradeIns: TradeIn[] }) {
           </h2>
           <div className="grid gap-3">
             {closed.map((t) => (
-              <TradeInRow key={t.id} tradeIn={t} loading={false} onUpdate={() => {}} />
+              <TradeInRow
+                key={t.id}
+                tradeIn={t}
+                loading={false}
+                onUpdate={() => {}}
+                onSendPaypalPayout={() => {}}
+              />
             ))}
           </div>
         </>
@@ -102,13 +124,16 @@ function TradeInRow({
   tradeIn,
   loading,
   onUpdate,
+  onSendPaypalPayout,
 }: {
   tradeIn: TradeIn;
   loading: boolean;
   onUpdate: (status: string) => void;
+  onSendPaypalPayout: () => void;
 }) {
+  const isPaypal = tradeIn.payment_method === "paypal";
   const payLink =
-    tradeIn.status === "received"
+    tradeIn.status === "received" && !isPaypal
       ? buildPaymentLink(
           tradeIn.payment_method,
           tradeIn.payment_handle,
@@ -140,6 +165,22 @@ function TradeInRow({
         </p>
       )}
 
+      {tradeIn.status === "received" && isPaypal && (
+        <div className="mt-3 rounded-lg bg-blue-50 p-3">
+          <p className="text-blue-800">
+            Send {formatCents(tradeIn.payout_cents)} to {tradeIn.payment_handle} automatically via
+            the PayPal Payouts API.
+          </p>
+          <button
+            onClick={onSendPaypalPayout}
+            disabled={loading}
+            className="mt-2 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-blue-700 disabled:opacity-60"
+          >
+            {loading ? "Sending..." : "Send PayPal payout"}
+          </button>
+        </div>
+      )}
+
       {tradeIn.status === "received" && payLink && (
         <div className="mt-3 rounded-lg bg-amber-50 p-3">
           <p className="text-amber-800">
@@ -155,6 +196,12 @@ function TradeInRow({
             </a>
           )}
         </div>
+      )}
+
+      {tradeIn.status === "paid" && tradeIn.payout_reference && (
+        <p className="mt-2 text-xs text-slate-400">
+          PayPal payout reference: <span className="font-mono">{tradeIn.payout_reference}</span>
+        </p>
       )}
 
       {tradeIn.admin_notes && tradeIn.status === "rejected" && (
@@ -175,9 +222,13 @@ function TradeInRow({
           <button
             onClick={() => onUpdate("paid")}
             disabled={loading}
-            className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-60"
+            className={
+              isPaypal
+                ? "rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 disabled:opacity-60"
+                : "rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-emerald-700 disabled:opacity-60"
+            }
           >
-            Mark paid
+            {isPaypal ? "Mark paid manually" : "Mark paid"}
           </button>
         )}
         {(tradeIn.status === "awaiting_shipment" ||

@@ -6,7 +6,7 @@ import { makeToken } from "../../_lib/tokens";
 import type { Condition, PaymentMethod } from "../../_lib/types";
 import { getWarehouseAddress } from "../../_lib/warehouse";
 
-const PAYMENT_METHODS: PaymentMethod[] = ["venmo", "paypal", "cashapp", "zelle"];
+const PAYMENT_METHODS: PaymentMethod[] = ["venmo", "paypal", "cashapp", "zelle", "stripe"];
 
 function str(body: Record<string, unknown>, key: string): string {
   return String(body?.[key] ?? "").trim();
@@ -46,6 +46,13 @@ export async function POST(req: Request) {
     if (!PAYMENT_METHODS.includes(paymentMethod) || !paymentHandle) {
       return NextResponse.json(
         { error: "Please choose a payout method and provide your account handle." },
+        { status: 400 }
+      );
+    }
+    // PayPal payouts are sent automatically via the Payouts API, which only accepts an email.
+    if (paymentMethod === "paypal" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paymentHandle)) {
+      return NextResponse.json(
+        { error: "PayPal payouts require the email address on your PayPal account." },
         { status: 400 }
       );
     }

@@ -8,9 +8,10 @@ import { formatCents } from "./_lib/types";
 
 const PAYMENT_METHODS: { value: PaymentMethod; label: string; placeholder: string }[] = [
   { value: "venmo", label: "Venmo", placeholder: "@username" },
-  { value: "paypal", label: "PayPal", placeholder: "PayPal.me username or email" },
+  { value: "paypal", label: "PayPal", placeholder: "Email on your PayPal account" },
   { value: "cashapp", label: "Cash App", placeholder: "$cashtag" },
   { value: "zelle", label: "Zelle", placeholder: "Email or phone" },
+  { value: "stripe", label: "Stripe", placeholder: "Email or account reference" },
 ];
 
 const inputClass =
@@ -203,6 +204,7 @@ export default function Home() {
               </div>
               <input
                 required
+                type={details.paymentMethod === "paypal" ? "email" : "text"}
                 placeholder={
                   PAYMENT_METHODS.find((pm) => pm.value === details.paymentMethod)?.placeholder
                 }
@@ -210,6 +212,12 @@ export default function Home() {
                 value={details.paymentHandle}
                 onChange={(e) => update("paymentHandle", e.target.value)}
               />
+              {details.paymentMethod === "paypal" && (
+                <p className="-mt-1 text-xs text-slate-500">
+                  We send your payout automatically to this PayPal email once your
+                  calculator is checked in.
+                </p>
+              )}
             </fieldset>
 
             <fieldset className="grid gap-4">
