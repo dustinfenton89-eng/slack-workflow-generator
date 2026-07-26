@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-export default function Home() {
+export default function LinkedInOutreach() {
   const [email, setEmail] = useState("");
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ export default function Home() {
     setResult(null);
 
     try {
-      const res = await fetch("/api/generate", {
+      const res = await fetch("/api/linkedin/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, inputText }),
@@ -47,8 +47,14 @@ export default function Home() {
   return (
     <main style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
       <h1 style={{ fontSize: 32, fontWeight: 900 }}>
-        Free Slack Workflow Blueprint Generator
+        Free LinkedIn Outreach Sequence Generator
       </h1>
+      <p style={{ marginTop: 8, color: "#555" }}>
+        Generates connection-request copy, follow-up messages, and objection
+        handling for you to send yourself. This is a copywriting tool, not an
+        automation bot — always send manually or via LinkedIn&apos;s own
+        features to stay within LinkedIn&apos;s terms.
+      </p>
 
       <form onSubmit={onSubmit} style={{ marginTop: 20, display: "grid", gap: 12 }}>
         <input
@@ -61,7 +67,7 @@ export default function Home() {
         <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Describe your workflow (roles, approvals, channel, SLA, etc.)"
+          placeholder="Describe your target persona, offer, and goal (e.g. 'VP of Sales at Series A SaaS companies, offering a demo of our outbound tool, goal is to book a 15-min call')"
           rows={8}
           style={{ padding: 12, border: "1px solid #ddd", borderRadius: 10 }}
         />
@@ -77,7 +83,7 @@ export default function Home() {
             fontWeight: 800,
           }}
         >
-          {loading ? "Generating..." : "Generate Blueprint"}
+          {loading ? "Generating..." : "Generate Outreach Sequence"}
         </button>
       </form>
 
@@ -111,7 +117,7 @@ export default function Home() {
       )}
 
       <p style={{ marginTop: 32 }}>
-        Also try the <Link href="/linkedin">LinkedIn Outreach Sequence Generator →</Link>
+        <Link href="/">← Back to Slack Workflow Generator</Link>
       </p>
     </main>
   );
