@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Affiliate Command Center
+
+A single-user internal tool for running and scaling an affiliate marketing business:
+
+- **Content Generator** — turn a niche/product brief into ready-to-publish affiliate content
+  (product reviews, comparison roundups, email sequences, social posts, SEO outlines) via OpenAI,
+  each with a shareable public link.
+- **Link Tracker** — create short trackable links (`/r/<slug>`) tagged by program/campaign; every
+  click is logged (referrer, user agent, hashed IP) and redirected to the real destination URL.
+- **Program & Commission Manager** — track every affiliate program you're enrolled in (network,
+  commission rate, cookie duration, payment schedule, status) and log conversions against a
+  program or a specific link to see lifetime and 30-day earnings.
+
+The whole dashboard sits behind a simple password gate (see [Auth](#auth) below) since it exposes
+your business data — the `/r/<slug>` redirects themselves stay public so real visitors can use them.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). You'll be redirected to `/login`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env.local` with:
 
-## Learn More
+```bash
+# Supabase (service role key — server-side only, never exposed to the client)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
-To learn more about Next.js, take a look at the following resources:
+# OpenAI (used by the content generator)
+OPENAI_API_KEY=sk-...
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Dashboard auth
+DASHBOARD_PASSWORD=choose-a-strong-password
+SESSION_SECRET=a-long-random-string   # used to sign session cookies + hash IPs
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Setup
 
-## Deploy on Vercel
+Run the SQL in [`supabase/migrations/0001_affiliate_schema.sql`](./supabase/migrations/0001_affiliate_schema.sql)
+against your Supabase project (SQL editor, or `supabase db push` if you use the CLI). It creates:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `affiliate_programs` — programs you're enrolled in and their terms
+- `affiliate_links` — trackable links, each with a unique `slug`
+- `affiliate_clicks` — one row per click on a tracked link
+- `affiliate_conversions` — manually logged commissions, tied to a link and/or program
+- `affiliate_content` — generated content pieces + their public share tokens
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+These tables are additive and don't touch any pre-existing tables in your project. All access
+happens server-side with the service role key, so no Row Level Security policies are required.
+
+## Auth
+
+There's no multi-user auth system — this is meant for a single operator. Signing in at `/login`
+with `DASHBOARD_PASSWORD` sets an HMAC-signed, httpOnly session cookie (signed with
+`SESSION_SECRET`, 7-day expiry) via `middleware.ts`, which gates `/dashboard/*` and the
+programs/links/conversions/content APIs. `/r/<slug>` and `/share/content/<token>` are intentionally
+left public.
+
+## Deploy
+
+Any Next.js host (e.g. Vercel) works. Set the environment variables above in your hosting
+provider's dashboard before deploying.
