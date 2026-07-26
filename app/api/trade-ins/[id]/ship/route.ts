@@ -6,27 +6,27 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
 
   try {
     const body = await req.json();
-    const buyerToken = String(body?.buyerToken || "");
+    const sellerToken = String(body?.sellerToken || "");
 
-    const { data: order, error: orderErr } = await supabaseAdmin
-      .from("orders")
-      .select("buyer_token, status")
+    const { data: tradeIn, error: findErr } = await supabaseAdmin
+      .from("trade_ins")
+      .select("seller_token, status")
       .eq("id", id)
       .single();
 
-    if (orderErr || !order) {
-      return NextResponse.json({ error: "Order not found." }, { status: 404 });
+    if (findErr || !tradeIn) {
+      return NextResponse.json({ error: "Trade-in not found." }, { status: 404 });
     }
-    if (order.buyer_token !== buyerToken) {
+    if (tradeIn.seller_token !== sellerToken) {
       return NextResponse.json({ error: "Not authorized." }, { status: 403 });
     }
-    if (order.status !== "shipped") {
-      return NextResponse.json({ error: "This order hasn't shipped yet." }, { status: 409 });
+    if (tradeIn.status !== "awaiting_shipment") {
+      return NextResponse.json({ error: "This trade-in isn't awaiting shipment." }, { status: 409 });
     }
 
     const { error: updateErr } = await supabaseAdmin
-      .from("orders")
-      .update({ status: "completed" })
+      .from("trade_ins")
+      .update({ status: "shipped", shipped_at: new Date().toISOString() })
       .eq("id", id);
 
     if (updateErr) throw updateErr;

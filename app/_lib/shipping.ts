@@ -1,5 +1,13 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import type { Listing, Order } from "./types";
+
+export type ShippingAddress = {
+  name: string;
+  address1: string;
+  address2?: string | null;
+  city: string;
+  state: string;
+  zip: string;
+};
 
 export type GeneratedLabel = {
   labelUrl: string;
@@ -12,7 +20,7 @@ const SHIPPO_API = "https://api.goshippo.com";
 
 /**
  * A small padded box, sized for a graphing calculator + charger. Good
- * enough as a default since sellers never know carrier box dimensions.
+ * enough as a default since we never know what box the seller has on hand.
  */
 const DEFAULT_PARCEL = {
   length: "9",
@@ -27,9 +35,21 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function toShippoAddress(addr: ShippingAddress) {
+  return {
+    name: addr.name,
+    street1: addr.address1,
+    street2: addr.address2 || undefined,
+    city: addr.city,
+    state: addr.state,
+    zip: addr.zip,
+    country: "US",
+  };
+}
+
 async function createRealShippoLabel(
-  listing: Listing,
-  order: Order,
+  addressFrom: ShippingAddress,
+  addressTo: ShippingAddress,
   apiKey: string
 ): Promise<GeneratedLabel> {
   const headers = {
@@ -41,24 +61,8 @@ async function createRealShippoLabel(
     method: "POST",
     headers,
     body: JSON.stringify({
-      address_from: {
-        name: listing.ship_from_name,
-        street1: listing.ship_from_address1,
-        street2: listing.ship_from_address2 || undefined,
-        city: listing.ship_from_city,
-        state: listing.ship_from_state,
-        zip: listing.ship_from_zip,
-        country: "US",
-      },
-      address_to: {
-        name: order.ship_to_name,
-        street1: order.ship_to_address1,
-        street2: order.ship_to_address2 || undefined,
-        city: order.ship_to_city,
-        state: order.ship_to_state,
-        zip: order.ship_to_zip,
-        country: "US",
-      },
+      address_from: toShippoAddress(addressFrom),
+      address_to: toShippoAddress(addressTo),
       parcels: [DEFAULT_PARCEL],
       async: false,
     }),
@@ -120,8 +124,12 @@ async function createRealShippoLabel(
   };
 }
 
-async function createDemoLabel(listing: Listing, order: Order): Promise<GeneratedLabel> {
-  const trackingNumber = `DEMO${order.id.replace(/-/g, "").slice(0, 16).toUpperCase()}`;
+async function createDemoLabel(
+  addressFrom: ShippingAddress,
+  addressTo: ShippingAddress,
+  referenceId: string
+): Promise<GeneratedLabel> {
+  const trackingNumber = `DEMO${referenceId.replace(/-/g, "").slice(0, 16).toUpperCase()}`;
 
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage([288, 432]); // 4in x 6in label
@@ -129,7 +137,10 @@ async function createDemoLabel(listing: Listing, order: Order): Promise<Generate
   const bold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
   let y = 400;
-  const draw = (text: string, opts: { size?: number; useBold?: boolean; color?: [number, number, number] } = {}) => {
+  const draw = (
+    text: string,
+    opts: { size?: number; useBold?: boolean; color?: [number, number, number] } = {}
+  ) => {
     page.drawText(text, {
       x: 16,
       y,
@@ -145,27 +156,27 @@ async function createDemoLabel(listing: Listing, order: Order): Promise<Generate
     useBold: true,
     color: [0.8, 0, 0],
   });
-  draw("Configure SHIPPO_API_KEY to issue real, free-to-seller postage.", { size: 8 });
+  draw("Configure SHIPPO_API_KEY to issue real, free prepaid postage.", { size: 8 });
   y -= 10;
 
   draw("FROM:", { useBold: true });
-  draw(listing.ship_from_name);
-  draw(listing.ship_from_address1);
-  if (listing.ship_from_address2) draw(listing.ship_from_address2);
-  draw(`${listing.ship_from_city}, ${listing.ship_from_state} ${listing.ship_from_zip}`);
+  draw(addressFrom.name);
+  draw(addressFrom.address1);
+  if (addressFrom.address2) draw(addressFrom.address2);
+  draw(`${addressFrom.city}, ${addressFrom.state} ${addressFrom.zip}`);
   y -= 14;
 
   draw("TO:", { useBold: true, size: 12 });
-  draw(order.ship_to_name, { size: 14, useBold: true });
-  draw(order.ship_to_address1, { size: 12 });
-  if (order.ship_to_address2) draw(order.ship_to_address2, { size: 12 });
-  draw(`${order.ship_to_city}, ${order.ship_to_state} ${order.ship_to_zip}`, { size: 12 });
+  draw(addressTo.name, { size: 14, useBold: true });
+  draw(addressTo.address1, { size: 12 });
+  if (addressTo.address2) draw(addressTo.address2, { size: 12 });
+  draw(`${addressTo.city}, ${addressTo.state} ${addressTo.zip}`, { size: 12 });
   y -= 20;
 
   draw("CARRIER: USPS (Demo)", { useBold: true });
   draw(`TRACKING #: ${trackingNumber}`, { useBold: true });
   y -= 10;
-  draw(`ORDER: ${order.id}`, { size: 8 });
+  draw(`REFERENCE: ${referenceId}`, { size: 8 });
 
   const pdfBytes = await pdfDoc.save();
   const base64 = Buffer.from(pdfBytes).toString("base64");
@@ -179,12 +190,13 @@ async function createDemoLabel(listing: Listing, order: Order): Promise<Generate
 }
 
 export async function generateShippingLabel(
-  listing: Listing,
-  order: Order
+  addressFrom: ShippingAddress,
+  addressTo: ShippingAddress,
+  referenceId: string
 ): Promise<GeneratedLabel> {
   const apiKey = process.env.SHIPPO_API_KEY;
   if (apiKey) {
-    return createRealShippoLabel(listing, order, apiKey);
+    return createRealShippoLabel(addressFrom, addressTo, apiKey);
   }
-  return createDemoLabel(listing, order);
+  return createDemoLabel(addressFrom, addressTo, referenceId);
 }

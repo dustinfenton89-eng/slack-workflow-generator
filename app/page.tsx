@@ -1,100 +1,278 @@
-import { supabaseAdmin } from "./_lib/supabaseAdmin";
-import { formatCents, type Listing } from "./_lib/types";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { CATALOG, CONDITIONS, getPayoutCents } from "./_lib/catalog";
+import type { Condition, PaymentMethod } from "./_lib/types";
+import { formatCents } from "./_lib/types";
 
-async function getListings(): Promise<{ listings: Listing[]; configError: string | null }> {
-  try {
-    const { data, error } = await supabaseAdmin
-      .from("listings")
-      .select("*")
-      .eq("status", "available")
-      .order("created_at", { ascending: false });
+const PAYMENT_METHODS: { value: PaymentMethod; label: string; placeholder: string }[] = [
+  { value: "venmo", label: "Venmo", placeholder: "@username" },
+  { value: "paypal", label: "PayPal", placeholder: "PayPal.me username or email" },
+  { value: "cashapp", label: "Cash App", placeholder: "$cashtag" },
+  { value: "zelle", label: "Zelle", placeholder: "Email or phone" },
+];
 
-    if (error) {
-      return { listings: [], configError: error.message };
+const inputClass =
+  "rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
+
+const initialDetails = {
+  sellerName: "",
+  sellerEmail: "",
+  paymentMethod: "venmo" as PaymentMethod,
+  paymentHandle: "",
+  shipFromName: "",
+  shipFromAddress1: "",
+  shipFromAddress2: "",
+  shipFromCity: "",
+  shipFromState: "",
+  shipFromZip: "",
+};
+
+export default function Home() {
+  const router = useRouter();
+  const [modelKey, setModelKey] = useState("");
+  const [condition, setCondition] = useState<Condition>("Good");
+  const [step, setStep] = useState<"quote" | "details">("quote");
+  const [details, setDetails] = useState(initialDetails);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const brands = useMemo(() => {
+    const map = new Map<string, typeof CATALOG>();
+    for (const m of CATALOG) {
+      map.set(m.brand, [...(map.get(m.brand) || []), m]);
     }
-    return { listings: data as Listing[], configError: null };
-  } catch (err) {
-    return {
-      listings: [],
-      configError: err instanceof Error ? err.message : "Server error",
-    };
-  }
-}
+    return map;
+  }, []);
 
-export default async function Home() {
-  const { listings, configError } = await getListings();
+  const payoutCents = modelKey ? getPayoutCents(modelKey, condition) : null;
+
+  function update<K extends keyof typeof initialDetails>(key: K, value: (typeof initialDetails)[K]) {
+    setDetails((d) => ({ ...d, [key]: value }));
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/trade-ins", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ modelKey, condition, ...details }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || "Failed to submit trade-in.");
+      router.push(`/trade-ins/${data.id}?token=${data.sellerToken}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Server error");
+      setLoading(false);
+    }
+  }
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-10">
+    <main className="mx-auto max-w-2xl px-4 py-10">
       <section className="mb-10">
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-          Sell your graphing calculator. Get paid instantly.
+          We&rsquo;ll buy your graphing calculator.
         </h1>
-        <p className="mt-3 max-w-2xl text-slate-600">
-          List a TI-84, TI-Nspire, Casio, or HP calculator, get paid straight
-          to your Venmo, PayPal, Cash App, or Zelle, then ship it with a free
-          shipping label — no meetups, no cash, no hassle.
+        <p className="mt-3 text-slate-600">
+          Pick your model and condition for an instant payout quote. Ship it to
+          us free, and get paid straight to your Venmo, PayPal, Cash App, or
+          Zelle once we&rsquo;ve checked it in.
         </p>
       </section>
 
-      {configError ? (
-        <div className="rounded-2xl border border-amber-300 bg-amber-50 p-6 text-sm text-amber-800">
-          <p className="font-semibold">CalcSwap isn&rsquo;t connected to a database yet.</p>
-          <p className="mt-1">
-            Set the <code>NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-            <code>SUPABASE_SERVICE_ROLE_KEY</code> environment variables (see{" "}
-            <code>supabase/schema.sql</code> for the schema to run), then reload this page.
-          </p>
-        </div>
-      ) : listings.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-          <p className="text-slate-600">
-            No calculators listed yet. Be the first to{" "}
-            <a href="/sell" className="font-semibold text-indigo-600 hover:underline">
-              sell one
-            </a>
-            .
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-          {listings.map((listing) => (
-            <a
-              key={listing.id}
-              href={`/listing/${listing.id}`}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      <div className="rounded-2xl border border-slate-200 bg-white p-6">
+        <div className="grid gap-4">
+          <label className="grid gap-1 text-sm font-medium text-slate-700">
+            Model
+            <select
+              className={inputClass}
+              value={modelKey}
+              onChange={(e) => {
+                setModelKey(e.target.value);
+                setStep("quote");
+              }}
             >
-              <div className="flex aspect-[4/3] items-center justify-center bg-slate-100">
-                {listing.photo_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={listing.photo_url}
-                    alt={listing.title}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="text-4xl">🖩</span>
-                )}
-              </div>
-              <div className="flex flex-1 flex-col gap-1 p-4">
-                <div className="flex items-start justify-between gap-2">
-                  <h2 className="font-semibold text-slate-900 group-hover:text-indigo-600">
-                    {listing.title}
-                  </h2>
-                  <span className="whitespace-nowrap font-bold text-slate-900">
-                    {formatCents(listing.price_cents)}
-                  </span>
-                </div>
-                <p className="text-sm text-slate-500">
-                  {listing.brand} {listing.model} · {listing.condition}
-                </p>
-              </div>
-            </a>
-          ))}
+              <option value="">Select your calculator...</option>
+              {[...brands.entries()].map(([brand, models]) => (
+                <optgroup key={brand} label={brand}>
+                  {models.map((m) => (
+                    <option key={m.key} value={m.key}>
+                      {m.model}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+
+          <div className="grid gap-1 text-sm font-medium text-slate-700">
+            Condition
+            <div className="grid grid-cols-4 gap-2">
+              {CONDITIONS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => {
+                    setCondition(c);
+                    setStep("quote");
+                  }}
+                  className={`rounded-lg border px-2 py-2 text-xs font-semibold ${
+                    condition === c
+                      ? "border-indigo-500 bg-indigo-50 text-indigo-700"
+                      : "border-slate-200 text-slate-600"
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
-      )}
+
+        {modelKey && payoutCents !== null && (
+          <div className="mt-6 flex items-center justify-between rounded-xl bg-indigo-50 px-4 py-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-indigo-600">
+                Your quote
+              </p>
+              <p className="text-2xl font-extrabold text-indigo-900">
+                {formatCents(payoutCents)}
+              </p>
+            </div>
+            {step === "quote" && (
+              <button
+                onClick={() => setStep("details")}
+                className="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-indigo-700"
+              >
+                Start trade-in
+              </button>
+            )}
+          </div>
+        )}
+
+        {modelKey && step === "details" && payoutCents !== null && (
+          <form onSubmit={onSubmit} className="mt-6 grid gap-6 border-t border-slate-200 pt-6">
+            <fieldset className="grid gap-4">
+              <legend className="mb-1 text-sm font-bold uppercase tracking-wide text-slate-500">
+                Your info
+              </legend>
+              <input
+                required
+                placeholder="Your name"
+                className={inputClass}
+                value={details.sellerName}
+                onChange={(e) => update("sellerName", e.target.value)}
+              />
+              <input
+                required
+                type="email"
+                placeholder="Your email"
+                className={inputClass}
+                value={details.sellerEmail}
+                onChange={(e) => update("sellerEmail", e.target.value)}
+              />
+            </fieldset>
+
+            <fieldset className="grid gap-3">
+              <legend className="mb-1 text-sm font-bold uppercase tracking-wide text-slate-500">
+                How you want to get paid
+              </legend>
+              <div className="grid grid-cols-2 gap-2">
+                {PAYMENT_METHODS.map((pm) => (
+                  <label
+                    key={pm.value}
+                    className={`flex cursor-pointer items-center justify-between rounded-lg border px-3 py-2 text-sm ${
+                      details.paymentMethod === pm.value
+                        ? "border-indigo-500 bg-indigo-50"
+                        : "border-slate-200"
+                    }`}
+                  >
+                    <span className="font-medium">{pm.label}</span>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={details.paymentMethod === pm.value}
+                      onChange={() => update("paymentMethod", pm.value)}
+                    />
+                  </label>
+                ))}
+              </div>
+              <input
+                required
+                placeholder={
+                  PAYMENT_METHODS.find((pm) => pm.value === details.paymentMethod)?.placeholder
+                }
+                className={inputClass}
+                value={details.paymentHandle}
+                onChange={(e) => update("paymentHandle", e.target.value)}
+              />
+            </fieldset>
+
+            <fieldset className="grid gap-4">
+              <legend className="mb-1 text-sm font-bold uppercase tracking-wide text-slate-500">
+                Ship from (for your free label)
+              </legend>
+              <input
+                required
+                placeholder="Name on package"
+                className={inputClass}
+                value={details.shipFromName}
+                onChange={(e) => update("shipFromName", e.target.value)}
+              />
+              <input
+                required
+                placeholder="Address line 1"
+                className={inputClass}
+                value={details.shipFromAddress1}
+                onChange={(e) => update("shipFromAddress1", e.target.value)}
+              />
+              <input
+                placeholder="Address line 2 (optional)"
+                className={inputClass}
+                value={details.shipFromAddress2}
+                onChange={(e) => update("shipFromAddress2", e.target.value)}
+              />
+              <div className="grid grid-cols-3 gap-4">
+                <input
+                  required
+                  placeholder="City"
+                  className={inputClass}
+                  value={details.shipFromCity}
+                  onChange={(e) => update("shipFromCity", e.target.value)}
+                />
+                <input
+                  required
+                  maxLength={2}
+                  placeholder="State"
+                  className={inputClass}
+                  value={details.shipFromState}
+                  onChange={(e) => update("shipFromState", e.target.value.toUpperCase())}
+                />
+                <input
+                  required
+                  placeholder="ZIP"
+                  className={inputClass}
+                  value={details.shipFromZip}
+                  onChange={(e) => update("shipFromZip", e.target.value)}
+                />
+              </div>
+            </fieldset>
+
+            {error && <p className="text-sm font-medium text-red-600">{error}</p>}
+
+            <button
+              disabled={loading}
+              className="rounded-lg bg-indigo-600 px-4 py-3 text-sm font-bold text-white hover:bg-indigo-700 disabled:opacity-60"
+            >
+              {loading ? "Submitting..." : `Confirm trade-in for ${formatCents(payoutCents)}`}
+            </button>
+          </form>
+        )}
+      </div>
     </main>
   );
 }

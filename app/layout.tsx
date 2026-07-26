@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CalcSwap — Buy & sell graphing calculators",
+  title: "CalcSwap — We buy graphing calculators",
   description:
-    "A campus marketplace for graphing calculators. Pay instantly with Venmo, PayPal, Cash App, or Zelle, then ship free.",
+    "Get an instant payout quote for your graphing calculator, ship it free, and get paid via Venmo, PayPal, Cash App, or Zelle.",
 };
 
 export default function RootLayout({
@@ -36,13 +36,7 @@ export default function RootLayout({
             </Link>
             <nav className="flex items-center gap-4 text-sm font-medium">
               <Link href="/" className="text-slate-600 hover:text-slate-900">
-                Browse
-              </Link>
-              <Link
-                href="/sell"
-                className="rounded-lg bg-indigo-600 px-3 py-1.5 text-white hover:bg-indigo-700"
-              >
-                Sell a calculator
+                Get a quote
               </Link>
             </nav>
           </div>
