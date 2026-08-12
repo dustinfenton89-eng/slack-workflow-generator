@@ -40,6 +40,32 @@ export default function Home() {
 
   return (
     <main style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
+      <a
+        href="/scorecard"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 12,
+          padding: "12px 16px",
+          marginBottom: 24,
+          borderRadius: 12,
+          border: "1px solid #111",
+          background: "#111",
+          color: "#fff",
+          textDecoration: "none",
+          fontWeight: 700,
+        }}
+      >
+        <span>
+          📊 First 90 Days — Results Operating System
+          <span style={{ opacity: 0.7, fontWeight: 400, marginLeft: 8 }}>
+            flag major issues &amp; get action steps
+          </span>
+        </span>
+        <span aria-hidden>→</span>
+      </a>
+
       <h1 style={{ fontSize: 32, fontWeight: 900 }}>
         Free Slack Workflow Blueprint Generator
       </h1>
