@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async rewrites() {
+    return [
+      // Serve the static PTA Lite prototype at a clean URL.
+      { source: "/pta-lite", destination: "/pta-lite.html" },
+    ];
+  },
 };
 
 export default nextConfig;

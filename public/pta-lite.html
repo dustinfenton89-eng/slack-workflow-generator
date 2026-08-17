@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PTA Lite — One-Off Amazon &amp; Marketplace Services | Prime Team Agency</title>
+<meta name="description" content="Fixed-scope, fixed-price Amazon, Walmart and TikTok Shop services from Prime Team Agency — creative, trademark, reinstatement and AI consulting. No retainer, kickoff in 48 hours.">
+<meta name="theme-color" content="#0A2540">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PTA Lite — Agency-grade work, one project at a time">
+<meta property="og:description" content="Fixed-scope, fixed-price marketplace services from the team behind $600MM+ in annual GMV. No retainer, no long-term contract.">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --navy:#0A2540;
+    --navy-2:#12365C;
+    --blue:#1E6FFF;
+    --blue-dk:#0B4FD1;
+    --blue-soft:#EAF1FF;
+    --ink:#1B2733;
+    --muted:#5B6B7C;
+    --line:#E3EAF2;
+    --bg:#FFFFFF;
+    --bg-2:#F6F9FE;
+    --good:#0E9F6E;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(10,37,64,.06), 0 8px 24px rgba(10,37,64,.06);
+    --shadow-lg:0 18px 50px rgba(10,37,64,.14);
+    --max:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-padding-top:96px}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%}
+  a{color:inherit}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+  h1,h2,h3,h4{line-height:1.15; letter-spacing:-.02em; margin:0}
+  h1{font-size:clamp(2.2rem,5.2vw,3.6rem); font-weight:800}
+  h2{font-size:clamp(1.7rem,3.4vw,2.5rem); font-weight:800}
+  h3{font-size:1.12rem; font-weight:700}
+  p{margin:0}
+  .eyebrow{
+    font-size:.74rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--blue);
+  }
+
+  /* ---------- prototype banner ---------- */
+  .proto{
+    background:var(--navy); color:#CFE0FF; font-size:.78rem; letter-spacing:.04em;
+    text-align:center; padding:7px 16px;
+  }
+  .proto b{color:#fff}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky; top:0; z-index:60; background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px); border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex; align-items:center; gap:28px; height:70px}
+  .logo{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:-.03em; font-size:1.06rem; text-decoration:none}
+  .mark{
+    width:30px; height:30px; border-radius:8px; flex:0 0 auto;
+    background:linear-gradient(140deg,var(--blue),#5B9BFF);
+    display:grid; place-items:center; color:#fff; font-size:.78rem; font-weight:800; letter-spacing:-.02em;
+  }
+  .lite-tag{
+    font-size:.62rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase;
+    background:var(--blue-soft); color:var(--blue-dk); padding:3px 7px; border-radius:5px;
+  }
+  .nav nav{display:flex; gap:26px; margin-left:8px}
+  .nav nav a{font-size:.9rem; font-weight:600; color:var(--muted); text-decoration:none}
+  .nav nav a:hover{color:var(--blue)}
+  .nav .spacer{flex:1}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-weight:700; font-size:.9rem; border-radius:10px; padding:11px 20px;
+    border:1px solid transparent; cursor:pointer; text-decoration:none; white-space:nowrap;
+    transition:transform .12s ease, background .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--blue); color:#fff; box-shadow:0 6px 18px rgba(30,111,255,.28)}
+  .btn-primary:hover{background:var(--blue-dk)}
+  .btn-ghost{background:#fff; color:var(--navy); border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--blue); color:var(--blue)}
+  .btn-lg{padding:14px 26px; font-size:.98rem}
+  .btn-block{width:100%}
+
+  .cartbtn{position:relative}
+  .cartbtn .count{
+    position:absolute; top:-6px; right:-6px; min-width:19px; height:19px; padding:0 5px;
+    background:var(--navy); color:#fff; border-radius:99px; font-size:.68rem; font-weight:800;
+    display:grid; place-items:center;
+  }
+  .burger{display:none; background:none; border:0; font-size:1.4rem; cursor:pointer; color:var(--navy)}
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:
+      radial-gradient(1000px 420px at 82% -12%, rgba(30,111,255,.14), transparent 65%),
+      linear-gradient(180deg,#FBFDFF 0%,#fff 100%);
+    border-bottom:1px solid var(--line);
+    padding:70px 0 64px;
+  }
+  .hero-grid{display:grid; grid-template-columns:1.08fr .92fr; gap:56px; align-items:center}
+  .hero p.lede{font-size:1.1rem; color:var(--muted); margin-top:18px; max-width:52ch}
+  .hero .cta-row{display:flex; gap:12px; margin-top:28px; flex-wrap:wrap}
+  .hero .micro{margin-top:18px; font-size:.83rem; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  .micro span{display:inline-flex; align-items:center; gap:6px}
+  .tick{color:var(--good); font-weight:800}
+
+  .hero-card{
+    background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px;
+    box-shadow:var(--shadow-lg);
+  }
+  .hero-card h4{font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:800}
+  .mini{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 0; border-bottom:1px dashed var(--line)}
+  .mini:last-of-type{border-bottom:0}
+  .mini .n{font-weight:600; font-size:.92rem}
+  .mini .s{font-size:.76rem; color:var(--muted)}
+  .mini .p{font-weight:800; color:var(--navy); font-size:.92rem; white-space:nowrap}
+
+  /* ---------- trust strip ---------- */
+  .trust{background:var(--navy); color:#fff; padding:26px 0}
+  .trust .row{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; text-align:center}
+  .trust .v{font-size:1.6rem; font-weight:800; letter-spacing:-.03em}
+  .trust .l{font-size:.76rem; color:#9FBEE8; letter-spacing:.05em; text-transform:uppercase; font-weight:600}
+
+  /* ---------- sections ---------- */
+  section{padding:78px 0}
+  .sec-head{max-width:660px; margin-bottom:38px}
+  .sec-head h2{margin-top:10px}
+  .sec-head p{color:var(--muted); margin-top:14px; font-size:1.03rem}
+  .center{margin-left:auto; margin-right:auto; text-align:center}
+
+  /* ---------- bundles ---------- */
+  #bundles{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .bundles{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start}
+  .bundle{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:28px 24px;
+    box-shadow:var(--shadow); display:flex; flex-direction:column; height:100%;
+  }
+  .bundle.pop{border:2px solid var(--blue); box-shadow:var(--shadow-lg); position:relative}
+  .badge{
+    position:absolute; top:-12px; left:24px; background:var(--blue); color:#fff;
+    font-size:.66rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    padding:5px 11px; border-radius:99px;
+  }
+  .bundle .price{display:flex; align-items:baseline; gap:8px; margin:16px 0 4px}
+  .bundle .price .amt{font-size:2.05rem; font-weight:800; letter-spacing:-.03em}
+  .bundle .price .was{font-size:.9rem; color:var(--muted); text-decoration:line-through}
+  .bundle .save{font-size:.78rem; color:var(--good); font-weight:700}
+  .bundle p.desc{color:var(--muted); font-size:.92rem; margin-top:10px}
+  .bundle ul{list-style:none; padding:0; margin:20px 0 24px; display:grid; gap:10px}
+  .bundle li{font-size:.9rem; display:flex; gap:9px; align-items:flex-start}
+  .bundle li::before{content:"✓"; color:var(--blue); font-weight:800; flex:0 0 auto}
+  .bundle .foot{margin-top:auto}
+
+  /* ---------- catalog ---------- */
+  .filters{display:flex; gap:9px; flex-wrap:wrap; margin-bottom:28px}
+  .chip{
+    border:1px solid var(--line); background:#fff; color:var(--muted);
+    padding:9px 16px; border-radius:99px; font-size:.85rem; font-weight:650; cursor:pointer;
+    transition:.15s ease;
+  }
+  .chip:hover{border-color:var(--blue); color:var(--blue)}
+  .chip.on{background:var(--navy); border-color:var(--navy); color:#fff}
+
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:22px;
+    display:flex; flex-direction:column; transition:.18s ease; position:relative;
+  }
+  .card:hover{border-color:#C6D9F5; box-shadow:var(--shadow); transform:translateY(-2px)}
+  .cat{
+    font-size:.64rem; font-weight:800; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--blue-dk); background:var(--blue-soft); padding:4px 9px; border-radius:5px; align-self:flex-start;
+  }
+  .card h3{margin-top:14px}
+  .card .blurb{color:var(--muted); font-size:.89rem; margin-top:9px}
+  .card .meta{display:flex; gap:14px; margin-top:14px; font-size:.76rem; color:var(--muted); flex-wrap:wrap}
+  .card .meta b{color:var(--ink); font-weight:700}
+  .card .buy{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:20px; padding-top:18px; border-top:1px solid var(--line)}
+  .card .amt{font-weight:800; font-size:1.2rem; letter-spacing:-.02em}
+  .card .amt small{display:block; font-size:.68rem; font-weight:600; color:var(--muted); letter-spacing:0}
+  .add{
+    background:var(--blue-soft); color:var(--blue-dk); border:1px solid transparent;
+    font-weight:750; font-size:.84rem; padding:10px 16px; border-radius:9px; cursor:pointer; transition:.15s;
+  }
+  .add:hover{background:var(--blue); color:#fff}
+  .add.in{background:var(--good); color:#fff}
+  .empty{padding:50px; text-align:center; color:var(--muted); border:1px dashed var(--line); border-radius:var(--radius)}
+
+  /* ---------- how ---------- */
+  #how{background:var(--bg-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line)}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+  .step{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:26px}
+  .step .num{
+    width:34px; height:34px; border-radius:9px; background:var(--navy); color:#fff;
+    display:grid; place-items:center; font-weight:800; font-size:.9rem; margin-bottom:16px;
+  }
+  .step p{color:var(--muted); font-size:.9rem; margin-top:8px}
+
+  /* ---------- band ---------- */
+  .band{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 100%);
+    color:#fff; border-radius:18px; padding:52px 44px; text-align:center;
+  }
+  .band p{color:#B9D0EF; margin-top:14px; max-width:56ch; margin-left:auto; margin-right:auto}
+  .band .cta-row{display:flex; gap:12px; justify-content:center; margin-top:26px; flex-wrap:wrap}
+  .btn-white{background:#fff; color:var(--navy)}
+  .btn-white:hover{background:#EAF1FF}
+  .btn-outline{background:transparent; color:#fff; border-color:rgba(255,255,255,.4)}
+  .btn-outline:hover{border-color:#fff}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:820px; margin:0 auto}
+  details{border-bottom:1px solid var(--line); padding:18px 0}
+  summary{
+    cursor:pointer; font-weight:700; font-size:1rem; list-style:none;
+    display:flex; justify-content:space-between; gap:20px; align-items:center;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+"; color:var(--blue); font-size:1.4rem; font-weight:700; line-height:1}
+  details[open] summary::after{content:"–"}
+  details p{color:var(--muted); font-size:.93rem; margin-top:12px; padding-right:36px}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--navy); color:#9FBEE8; padding:60px 0 30px; font-size:.87rem}
+  .fgrid{display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:36px}
+  footer h5{color:#fff; font-size:.72rem; letter-spacing:.13em; text-transform:uppercase; margin:0 0 16px}
+  footer a{display:block; color:#9FBEE8; text-decoration:none; padding:5px 0}
+  footer a:hover{color:#fff}
+  .fbot{
+    margin-top:44px; padding-top:22px; border-top:1px solid rgba(255,255,255,.12);
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; font-size:.8rem;
+  }
+
+  /* ---------- cart drawer ---------- */
+  .scrim{
+    position:fixed; inset:0; background:rgba(10,37,64,.45); opacity:0; pointer-events:none;
+    transition:opacity .22s ease; z-index:90;
+  }
+  .scrim.on{opacity:1; pointer-events:auto}
+  .drawer{
+    position:fixed; top:0; right:0; height:100%; width:min(420px,100%); background:#fff;
+    z-index:100; transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1);
+    display:flex; flex-direction:column; box-shadow:-20px 0 60px rgba(10,37,64,.2);
+  }
+  .drawer.on{transform:translateX(0)}
+  .dhead{display:flex; align-items:center; justify-content:space-between; padding:22px 24px; border-bottom:1px solid var(--line)}
+  .dhead h3{font-size:1.05rem}
+  .close{background:none; border:0; font-size:1.5rem; line-height:1; cursor:pointer; color:var(--muted)}
+  .dbody{flex:1; overflow-y:auto; padding:12px 24px}
+  .line{display:flex; gap:12px; align-items:flex-start; padding:16px 0; border-bottom:1px solid var(--line)}
+  .line .t{flex:1}
+  .line .t b{display:block; font-size:.92rem}
+  .line .t span{font-size:.75rem; color:var(--muted)}
+  .line .pr{font-weight:800; font-size:.92rem; white-space:nowrap}
+  .rm{background:none; border:0; color:var(--muted); cursor:pointer; font-size:.75rem; text-decoration:underline; padding:0; margin-top:5px}
+  .rm:hover{color:#D64545}
+  .dfoot{border-top:1px solid var(--line); padding:20px 24px 26px; background:var(--bg-2)}
+  .tot{display:flex; justify-content:space-between; font-weight:800; font-size:1.06rem; margin-bottom:6px}
+  .dfoot .fine{font-size:.75rem; color:var(--muted); margin-bottom:16px}
+  .cart-empty{text-align:center; color:var(--muted); padding:56px 20px; font-size:.9rem}
+
+  /* ---------- mobile ---------- */
+  @media (max-width:960px){
+    .hero-grid{grid-template-columns:1fr; gap:36px}
+    .bundles,.cards,.steps{grid-template-columns:1fr 1fr}
+    .fgrid{grid-template-columns:1fr 1fr}
+    .trust .row{grid-template-columns:1fr 1fr; gap:24px}
+  }
+  @media (max-width:700px){
+    .nav nav{
+      display:none; position:absolute; top:70px; left:0; right:0; background:#fff;
+      flex-direction:column; gap:0; padding:8px 24px 18px; border-bottom:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+    .nav nav.open{display:flex}
+    .nav nav a{padding:12px 0; border-bottom:1px solid var(--line); font-size:.95rem}
+    .burger{display:block; order:5}
+    .hdr-cta{display:none}
+    .bundles,.cards,.steps{grid-template-columns:1fr}
+    section{padding:56px 0}
+    .band{padding:38px 24px}
+    .fgrid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="proto">PROTOTYPE — layout &amp; copy concept for <b>PTA Lite</b>. All pricing and turnaround figures are placeholders.</div>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">
+      <span class="mark">PT</span>
+      Prime&nbsp;Team <span class="lite-tag">Lite</span>
+    </a>
+    <nav id="menu">
+      <a href="#bundles">Bundles</a>
+      <a href="#catalog">Services</a>
+      <a href="#how">How It Works</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://www.primeteam.agency" target="_blank" rel="noopener">Full Service ↗</a>
+    </nav>
+    <span class="spacer"></span>
+    <button class="btn btn-ghost cartbtn" onclick="openCart()">
+      Cart <span class="count" id="count">0</span>
+    </button>
+    <a class="btn btn-primary hdr-cta" href="#catalog">Browse Services</a>
+    <button class="burger" onclick="document.getElementById('menu').classList.toggle('open')" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Prime Team Agency · Lite</div>
+      <h1 style="margin-top:14px">Agency-grade work.<br>One project at a time.</h1>
+      <p class="lede">
+        The same creative, compliance and strategy team behind <b>$600MM+ in annual marketplace GMV</b> —
+        now available as fixed-scope, fixed-price projects. No retainer, no long-term contract.
+        Pick what you need, check out, and we start within two business days.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-primary btn-lg" href="#catalog">Browse Services</a>
+        <a class="btn btn-ghost btn-lg" href="#bundles">See Bundles</a>
+      </div>
+      <div class="micro">
+        <span><i class="tick">✓</i> Fixed price, no retainer</span>
+        <span><i class="tick">✓</i> Kickoff in 48 hours</span>
+        <span><i class="tick">✓</i> US-based senior team</span>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <h4>Most requested this month</h4>
+      <div class="mini"><div><div class="n">A+ Content Design</div><div class="s">7–10 business days</div></div><div class="p">$1,450</div></div>
+      <div class="mini"><div><div class="n">Listing Reinstatement</div><div class="s">Amazon · 3–5 days</div></div><div class="p">$1,200</div></div>
+      <div class="mini"><div><div class="n">Trademark Filing</div><div class="s">USPTO · single class</div></div><div class="p">$950</div></div>
+      <div class="mini"><div><div class="n">Main Image Optimization</div><div class="s">5 business days</div></div><div class="p">$650</div></div>
+      <div style="margin-top:18px">
+        <a class="btn btn-primary btn-block" href="#catalog">See all 26 services</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TRUST ================= -->
+<div class="trust">
+  <div class="wrap row">
+    <div><div class="v">$600MM+</div><div class="l">Annual GMV managed</div></div>
+    <div><div class="v">65+</div><div class="l">Brands served</div></div>
+    <div><div class="v">30%</div><div class="l">Avg. conversion lift</div></div>
+    <div><div class="v">48 hrs</div><div class="l">To project kickoff</div></div>
+  </div>
+</div>
+
+<!-- ================= BUNDLES ================= -->
+<section id="bundles">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">Bundles</div>
+      <h2>Save when you stack</h2>
+      <p>Three packaged combinations that cover the jobs brands ask for together. Everything is also available individually below.</p>
+    </div>
+
+    <div class="bundles">
+      <div class="bundle">
+        <h3>Launch Ready</h3>
+        <p class="desc">For a new ASIN or a brand moving onto a new marketplace. Everything the listing needs to convert on day one.</p>
+        <div class="price"><span class="amt">$2,900</span><span class="was">$3,550</span></div>
+        <div class="save">Save $650</div>
+        <ul>
+          <li>Main image optimization (3 concepts)</li>
+          <li>A+ Content — 5 modules, designed &amp; uploaded</li>
+          <li>Brand Story module build</li>
+          <li>Keyword-mapped title &amp; bullets rewrite</li>
+        </ul>
+        <div class="foot"><button class="btn btn-ghost btn-block" data-bundle="Launch Ready Bundle" data-price="2900">Add Bundle</button></div>
+      </div>
+
+      <div class="bundle pop">
+        <span class="badge">Most popular</span>
+        <h3>Brand Presence</h3>
+        <p class="desc">The full creative footprint — storefront, A+, brand story and a live shopping session to drive traffic to it.</p>
+        <div class="price"><span class="amt">$6,400</span><span class="was">$7,900</span></div>
+        <div class="save">Save $1,500</div>
+        <ul>
+          <li>Amazon Store build — up to 5 pages</li>
+          <li>A+ Content — 5 modules</li>
+          <li>Brand Story module build</li>
+          <li>Amazon Live — 1 hosted session</li>
+          <li>Main image optimization (3 concepts)</li>
+        </ul>
+        <div class="foot"><button class="btn btn-primary btn-block" data-bundle="Brand Presence Bundle" data-price="6400">Add Bundle</button></div>
+      </div>
+
+      <div class="bundle">
+        <h3>Protect &amp; Recover</h3>
+        <p class="desc">For brands dealing with a suspension, a hijacker, or both. Filing plus reinstatement, handled end to end.</p>
+        <div class="price"><span class="amt">$3,400</span><span class="was">$4,150</span></div>
+        <div class="save">Save $750</div>
+        <ul>
+          <li>USPTO trademark filing — single class</li>
+          <li>Brand Registry enrollment support</li>
+          <li>Listing reinstatement — 1 ASIN, any channel</li>
+          <li>Plan of Action drafting &amp; appeal escalation</li>
+        </ul>
+        <div class="foot"><button class="btn btn-ghost btn-block" data-bundle="Protect &amp; Recover Bundle" data-price="3400">Add Bundle</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CATALOG ================= -->
+<section id="catalog">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">À la carte</div>
+      <h2>Pick exactly what you need</h2>
+      <p>Every service is fixed-scope and fixed-price. Add to cart, tell us about your account at checkout, and a strategist confirms scope before any work begins.</p>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="chip on" data-f="all">All services</button>
+      <button class="chip" data-f="creative">Creative</button>
+      <button class="chip" data-f="trademark">Trademark</button>
+      <button class="chip" data-f="listing">Listing Reinstatement</button>
+      <button class="chip" data-f="account">Account Reinstatement</button>
+      <button class="chip" data-f="ai">AI Consulting</button>
+    </div>
+
+    <div class="cards" id="cards"></div>
+    <div class="empty" id="empty" style="display:none">No services in this category yet.</div>
+  </div>
+</section>
+
+<!-- ================= HOW ================= -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">How it works</div>
+      <h2>Three steps, no discovery calls required</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Choose &amp; check out</h3>
+        <p>Add services to your cart and pay online. Reinstatement work is scoped on a free eligibility check first — you're not charged until we confirm we can take the case.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Share access</h3>
+        <p>A short intake form collects your brand assets and read-only Seller Central access. Takes about ten minutes.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>We build, you approve</h3>
+        <p>A senior specialist owns the project. You get one round of revisions on creative work and unlimited appeal resubmissions on reinstatements.</p>
+      </div>
+    </div>
+    <div style="margin-top:22px; text-align:center; color:var(--muted); font-size:.88rem">
+      Need something outside these scopes? <a href="#" style="color:var(--blue); font-weight:700">Talk to a strategist →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BAND ================= -->
+<section style="padding-top:0">
+  <div class="wrap" style="padding-top:78px">
+    <div class="band">
+      <div class="eyebrow" style="color:#7FB0FF">Not sure where to start?</div>
+      <h2 style="color:#fff; margin-top:12px">Free eligibility check on any reinstatement</h2>
+      <p>Send us the suspension notice or policy violation and we'll tell you within one business day whether we'd take the case, what we'd argue, and what it costs. No charge, no obligation.</p>
+      <div class="cta-row">
+        <a class="btn btn-white btn-lg" href="#catalog">Request Free Check</a>
+        <a class="btn btn-outline btn-lg" href="https://www.primeteam.agency" target="_blank" rel="noopener">Explore Full Service</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" style="padding-top:20px">
+  <div class="wrap">
+    <div class="sec-head center">
+      <div class="eyebrow">FAQ</div>
+      <h2>Common questions</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>How is PTA Lite different from full-service Prime Team?</summary>
+        <p>Full service is an ongoing retainer where we own your marketplace strategy, advertising and catalog day to day. Lite is the same team on a project basis — a defined deliverable, a fixed price, and a clear finish line. Many brands start with Lite and move to full service later; anything you spend on Lite in your first 90 days is credited toward a retainer if you do.</p>
+      </details>
+      <details>
+        <summary>Do you guarantee reinstatement?</summary>
+        <p>No one honestly can — the decision belongs to the marketplace. What we do guarantee is that we won't take a case we don't believe in, which is why every reinstatement starts with a free eligibility check. If we take your case, we keep drafting and escalating appeals until the account or listing is restored or the channel issues a final denial.</p>
+      </details>
+      <details>
+        <summary>What's the turnaround on creative work?</summary>
+        <p>Main image optimization runs about five business days, A+ Content seven to ten, and a full store build two to three weeks depending on page count. Timelines start once we have your assets and access, not at checkout.</p>
+      </details>
+      <details>
+        <summary>Are you a law firm for trademark work?</summary>
+        <p>Filings are prepared and submitted by a licensed US trademark attorney we partner with. Government filing fees are billed separately at cost. Prime Team Agency itself does not provide legal advice.</p>
+      </details>
+      <details>
+        <summary>Which marketplaces do you cover?</summary>
+        <p>Amazon, Walmart Marketplace and TikTok Shop for reinstatement work. Creative services cover Amazon and TikTok Shop; Walmart creative is available on request.</p>
+      </details>
+      <details>
+        <summary>What if my situation doesn't fit a fixed scope?</summary>
+        <p>Plenty don't. Multi-ASIN suspensions, section 3 violations with a linked-account component, or a store build with heavy custom photography usually need a custom quote. Reach out and we'll price it directly.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div>
+        <a class="logo" href="#top" style="color:#fff; text-decoration:none">
+          <span class="mark">PT</span> Prime&nbsp;Team <span class="lite-tag">Lite</span>
+        </a>
+        <p style="margin-top:16px; max-width:34ch">
+          Fixed-scope marketplace services from the team behind $600MM+ in annual GMV.
+        </p>
+      </div>
+      <div>
+        <h5>Creative</h5>
+        <a href="#catalog">A+ Content</a>
+        <a href="#catalog">Amazon Lives</a>
+        <a href="#catalog">Store Build</a>
+        <a href="#catalog">Brand Story</a>
+        <a href="#catalog">Main Image</a>
+      </div>
+      <div>
+        <h5>Protect</h5>
+        <a href="#catalog">Trademark Filing</a>
+        <a href="#catalog">Brand Registry</a>
+        <a href="#catalog">Listing Reinstatement</a>
+        <a href="#catalog">Account Reinstatement</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="https://www.primeteam.agency" target="_blank" rel="noopener">Full-Service Agency</a>
+        <a href="#catalog">AI Consulting</a>
+        <a href="#faq">FAQ</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="fbot">
+      <span>© 2026 Prime Team Agency. All rights reserved.</span>
+      <span>Privacy Policy · Terms of Use</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= CART ================= -->
+<div class="scrim" id="scrim" onclick="closeCart()"></div>
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <div class="dhead">
+    <h3>Your project cart</h3>
+    <button class="close" onclick="closeCart()" aria-label="Close">×</button>
+  </div>
+  <div class="dbody" id="dbody"></div>
+  <div class="dfoot">
+    <div class="tot"><span>Estimated total</span><span id="total">$0</span></div>
+    <div class="fine">Scope is confirmed by a strategist before any charge is processed. Government filing fees billed at cost.</div>
+    <button class="btn btn-primary btn-block btn-lg" onclick="alert('Prototype — checkout flow not connected.')">Continue to Checkout</button>
+  </div>
+</aside>
+
+<script>
+const SERVICES = [
+  // ---- CREATIVE ----
+  {c:'creative', cat:'Creative', n:'A+ Content Design', p:1450,
+   b:'Five custom modules designed, copywritten and uploaded to your detail page — built around the keywords that actually convert.',
+   m:['7–10 business days','1 revision round','Per ASIN']},
+  {c:'creative', cat:'Creative', n:'Premium A+ / A+ Story', p:2400,
+   b:'Premium module set with video, hotspot comparison charts and interactive carousels for Brand Registered sellers.',
+   m:['10–14 business days','1 revision round','Per ASIN']},
+  {c:'creative', cat:'Creative', n:'Amazon Live — Single Session',  p:1800,
+   b:'One hosted live shopping session: host sourcing, run-of-show, product talking points, streaming setup and post-session clip pack.',
+   m:['2 weeks lead time','60 min live','Clips included']},
+  {c:'creative', cat:'Creative', n:'Amazon Live — 4-Session Series', p:5900,
+   b:'A month of recurring live sessions with a consistent host, plus performance reporting on attributed sales per stream.',
+   m:['4 sessions','Same host','Reporting included']},
+  {c:'creative', cat:'Creative', n:'Amazon Store Build — 3 Pages', p:2600,
+   b:'A merchandised storefront with a home page and two category pages, built for navigation and repeat traffic.',
+   m:['2 weeks','Up to 3 pages','Mobile optimized']},
+  {c:'creative', cat:'Creative', n:'Amazon Store Build — 5+ Pages', p:4200,
+   b:'Full storefront architecture with category pages, shoppable imagery and a bestsellers module.',
+   m:['2–3 weeks','5+ pages','Mobile optimized']},
+  {c:'creative', cat:'Creative', n:'Brand Story Build', p:750,
+   b:'The cross-listing brand story module — positioning copy, ASIN cross-sell tiles and brand imagery.',
+   m:['5 business days','Applies catalog-wide','Brand Registry required']},
+  {c:'creative', cat:'Creative', n:'Main Image Optimization', p:650,
+   b:'Three compliant hero image concepts, CTR-tested reasoning included. The single highest-leverage creative fix on most listings.',
+   m:['5 business days','3 concepts','TOS compliant']},
+  {c:'creative', cat:'Creative', n:'Full Image Stack Refresh', p:1900,
+   b:'Complete gallery rebuild — hero, infographics, lifestyle, comparison chart and mobile-first sizing across seven slots.',
+   m:['7–10 business days','7 images','Per ASIN']},
+
+  // ---- TRADEMARK ----
+  {c:'trademark', cat:'Trademark', n:'Trademark Search &amp; Clearance', p:450,
+   b:'Comprehensive knockout search across USPTO, common law and marketplace usage, with a written risk read on your mark.',
+   m:['3–5 business days','Written opinion','Attorney reviewed']},
+  {c:'trademark', cat:'Trademark', n:'USPTO Filing — Single Class', p:950,
+   b:'Attorney-prepared application, specimen guidance and filing. Government fees billed separately at cost.',
+   m:['Filed in 5 days','1 class','+ USPTO fees']},
+  {c:'trademark', cat:'Trademark', n:'Office Action Response', p:1200,
+   b:'Response to a USPTO refusal — likelihood of confusion, descriptiveness or specimen issues — drafted and filed by counsel.',
+   m:['Within deadline','Attorney drafted','Per action']},
+  {c:'trademark', cat:'Trademark', n:'Brand Registry Enrollment', p:600,
+   b:'End-to-end Amazon Brand Registry enrollment, including Project Zero and Transparency evaluation.',
+   m:['1–2 weeks','Amazon + TikTok','Registered mark required']},
+
+  // ---- LISTING REINSTATEMENT ----
+  {c:'listing', cat:'Listing Reinstatement', n:'Amazon Listing Reinstatement', p:1200,
+   b:'Suppressed, blocked or deactivated ASIN. Root-cause analysis, Plan of Action drafting and appeal escalation through Seller Support.',
+   m:['3–5 business days','1 ASIN','Free eligibility check']},
+  {c:'listing', cat:'Listing Reinstatement', n:'Walmart Listing Reinstatement', p:1100,
+   b:'Item-level unpublish, trust &amp; safety flag or content violation on Walmart Marketplace, appealed through Partner Support.',
+   m:['5–7 business days','1 item','Free eligibility check']},
+  {c:'listing', cat:'Listing Reinstatement', n:'TikTok Shop Listing Reinstatement', p:900,
+   b:'Product takedown or governance violation on TikTok Shop — appeal drafting, documentation package and escalation.',
+   m:['3–5 business days','1 product','Free eligibility check']},
+  {c:'listing', cat:'Listing Reinstatement', n:'IP Complaint Retraction', p:1500,
+   b:'Rights-owner outreach and retraction negotiation on false or resolved IP claims, plus removal from your account health record.',
+   m:['1–3 weeks','Per complaint','Outcome dependent']},
+
+  // ---- ACCOUNT REINSTATEMENT ----
+  {c:'account', cat:'Account Reinstatement', n:'Amazon Account Reinstatement', p:3500,
+   b:'Full seller account deactivation. Root cause investigation, Plan of Action, supporting evidence package and escalation to Account Health.',
+   m:['7–14 business days','Unlimited resubmissions','Free eligibility check']},
+  {c:'account', cat:'Account Reinstatement', n:'Amazon Section 3 / Linked Account', p:5500,
+   b:'The hardest category — related-account enforcement and Section 3 suspensions requiring relationship documentation and a full compliance narrative.',
+   m:['2–5 weeks','Senior case lead','Free eligibility check']},
+  {c:'account', cat:'Account Reinstatement', n:'Walmart Account Reinstatement', p:3200,
+   b:'Seller account suspension on Walmart Marketplace — performance, authenticity or policy driven — appealed through Partner Support.',
+   m:['2–4 weeks','Unlimited resubmissions','Free eligibility check']},
+  {c:'account', cat:'Account Reinstatement', n:'TikTok Shop Account Reinstatement', p:2800,
+   b:'Shop deactivation or permanent closure appeal, including violation-point remediation and governance documentation.',
+   m:['1–3 weeks','Unlimited resubmissions','Free eligibility check']},
+  {c:'account', cat:'Account Reinstatement', n:'Account Health Audit', p:800,
+   b:'Preventative review across all three channels — violation exposure, at-risk ASINs and a prioritized remediation plan before enforcement hits.',
+   m:['5 business days','All 3 channels','Written report']},
+
+  // ---- AI ----
+  {c:'ai', cat:'AI Consulting', n:'AI Readiness Audit', p:1500,
+   b:'Where AI actually saves your team hours — a mapped review of your listing, support, creative and reporting workflows with a ranked opportunity list.',
+   m:['1–2 weeks','Written roadmap','Team interviews']},
+  {c:'ai', cat:'AI Consulting', n:'AI Coaching — 4 Sessions', p:2200,
+   b:'Four live working sessions with your team on practical marketplace AI: listing generation, review mining, competitor monitoring and prompt discipline.',
+   m:['4 × 60 min','Up to 8 people','Recordings included']},
+  {c:'ai', cat:'AI Consulting', n:'Custom Workflow Build', p:4500,
+   b:'We build and hand over one production AI workflow — bulk listing generation, review sentiment pipeline or automated competitor tracking — documented for your team.',
+   m:['3–4 weeks','1 workflow','Docs + training']},
+  {c:'ai', cat:'AI Consulting', n:'GEO Starter — AI Search Visibility', p:1900,
+   b:'Generative Engine Optimization: how your brand appears in AI shopping answers, with a content and structured-data plan to improve it.',
+   m:['2 weeks','Baseline + plan','Per brand']}
+];
+
+let filter = 'all';
+const cart = [];
+
+function money(n){ return '$' + n.toLocaleString('en-US'); }
+
+function render(){
+  const list = SERVICES.filter(s => filter === 'all' || s.c === filter);
+  const el = document.getElementById('cards');
+  document.getElementById('empty').style.display = list.length ? 'none' : 'block';
+  el.innerHTML = list.map(s => {
+    const inCart = cart.some(i => i.n === s.n);
+    return `<article class="card">
+      <span class="cat">${s.cat}</span>
+      <h3>${s.n}</h3>
+      <p class="blurb">${s.b}</p>
+      <div class="meta">${s.m.map(m => `<span><b>${m}</b></span>`).join('')}</div>
+      <div class="buy">
+        <div class="amt">${money(s.p)}<small>fixed price</small></div>
+        <button class="add ${inCart ? 'in' : ''}" data-n="${s.n}" data-p="${s.p}">
+          ${inCart ? 'Added ✓' : 'Add to cart'}
+        </button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function renderCart(){
+  const body = document.getElementById('dbody');
+  const total = cart.reduce((a, i) => a + i.p, 0);
+  document.getElementById('count').textContent = cart.length;
+  document.getElementById('total').textContent = money(total);
+  body.innerHTML = cart.length
+    ? cart.map((i, idx) => `<div class="line">
+        <div class="t"><b>${i.n}</b><span>${i.tag}</span>
+          <button class="rm" data-i="${idx}">Remove</button></div>
+        <div class="pr">${money(i.p)}</div>
+      </div>`).join('')
+    : `<div class="cart-empty">Your cart is empty.<br>Add a service or bundle to get started.</div>`;
+}
+
+document.addEventListener('click', e => {
+  const add = e.target.closest('.add');
+  if (add){
+    const n = add.dataset.n, p = +add.dataset.p;
+    const i = cart.findIndex(x => x.n === n);
+    if (i > -1) cart.splice(i, 1);
+    else cart.push({n, p, tag:'One-off service'});
+    render(); renderCart();
+    if (i === -1) openCart();
+    return;
+  }
+  const bundle = e.target.closest('[data-bundle]');
+  if (bundle){
+    const n = bundle.dataset.bundle;
+    if (!cart.some(x => x.n === n)) cart.push({n, p:+bundle.dataset.price, tag:'Bundle · multi-service'});
+    renderCart(); openCart();
+    return;
+  }
+  const rm = e.target.closest('.rm');
+  if (rm){ cart.splice(+rm.dataset.i, 1); render(); renderCart(); return; }
+  const chip = e.target.closest('.chip');
+  if (chip){
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+    filter = chip.dataset.f;
+    render();
+  }
+  const link = e.target.closest('#menu a');
+  if (link) document.getElementById('menu').classList.remove('open');
+});
+
+function openCart(){
+  document.getElementById('drawer').classList.add('on');
+  document.getElementById('scrim').classList.add('on');
+}
+function closeCart(){
+  document.getElementById('drawer').classList.remove('on');
+  document.getElementById('scrim').classList.remove('on');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+render(); renderCart();
+</script>
+</body>
+</html>
